@@ -42,8 +42,18 @@ that can receive a focus event from the keyboard.
 
 It is essentially used on input elements.
 _
-
-
+element.contains(tag, text): This is the way we usually use to target elements that can't be targeted by the "normal
+ways", like styling classes or classes with too much special characters.
+_
+cy.wait(duration): How much time we want to wait after an action was sent, like a click
+_
+data.cy property: This property was set by the developer to easy and help the automation flow. These properties are common
+for cypress so it can use them inside the whole automation process. 
+_
+should('be.visible'): This was chained to the get, and said that the element selected SHOULD be visible.
+_
+.and("have.text", "Fernando Papito"): and is usually chained after the should function. It first saw that the element is
+visible, and then, check if the text of the element is the second parameter one.
 
 ## Configuration
 
@@ -75,12 +85,50 @@ we can use to target a given element.
 Cypress tests usually consist of:
 
 . the js file containing the test
-. a fixture file, which is a file that hommands for that test and a e2e.js, which imports the commands and is processed
+. a fixture file, which is a file that commands for that test and a e2e.js, which imports the commands and is processed
 before the tests.
 
+### XPath
+
+In the context of cypress, XPath is a query language used to navigate across the DOM and locate elements. Although
+cypress use css selectors by default, it allows us to use XPaths
+
+#### XPath anatomy
+
+Imagine we are giving an address to the computer
+
+//: Search in any part of the document (it doesn't have to be the first element)
+button: The element has to be a html tag <button>
+[...]: Here we filter (a condition)
+text()=Entrar: The condition is that the visible text inside the button is exactly "Entrar"
+
+### Selectors
+
+If on cypress, we click on the button to see the suggested way to select that element. The button gave us
+`cy.get('.bg-\[\#8257E5\]')`. But this is the tailwind class we used to make the button purple, we have to
+be more specific in which element we are choosing, despite the fact that it has brackets, slashes, and so.
+
+Styling classes should not be used as selectors for tests.
+
+One good "locator" we could use for these cases where we don't have a specific class or an id, would be using a XPath
+like: //button[text()="Entrar"]
+
+However, cypress, by default, don't support xpath. 
+
+## Assert/Expected
+
+The term "assert" in Cypress (and in almost any testing framework), are the checks we write to verify that our application
+behaves the way we expect.
+They're how our tests decide whether something passes or fails. We can think of them as "proof points"
+
+An assertion is basic a statement that says:
+
+"The element value/state **should be** like this. If the assertion is true -> test passes, otherwise, fails.
 
 
+## First e2e test
 
-
+As soon as we, inputted an e-mail, a password, clicked on the login, and checked if the shown page has an expected text,
+it was a simple, yet an e2e example.
 
 
