@@ -1,18 +1,18 @@
 ## Commands and important concepts
 
-Serve: Creates a mini web server locally in a way that the web application runs on that path.
+**Serve:** Creates a mini web server locally in a way that the web application runs on that path.
 _
-npx cypress open: Executes cypress in a interactive mode. It is the visual interface of cypress
+**npx cypress open:** Executes cypress in a interactive mode. It is the visual interface of cypress
 _
-describe: used to group of a set of automated tests
+**describe:** used to group of a set of automated tests
 _
-it: a function that implements an automated test
+**it:** a function that implements an automated test
 _
-cy.viewport(w, h): Creates a window with the defined viewport
+**cy.viewport(w, h):** Creates a window* with the defined viewport
 _
-cy.visit(url): Visits the given url
-_
-cy.get('selector'): This is a command to target a specific element of the DOM. Since cypress is async, it works like
+**cy.visit(url): Visits the given url
+_**
+**cy.get('selector'):** This is a command to target a specific element of the DOM. Since cypress is async, it works like
 a message queue, not a immediate object return.
 
 This means that we don't need to save the elements into a variable, but to directly chain the commands or using the
@@ -28,7 +28,9 @@ cy.get('.product-price').then(($element) => {
 Here we are selecting the element with the product-price class, and inside the .then(($element)), that $element will consist
 of the jQuery object that contains the DOM element
 _
-aliases: If we would like to reuse a selector multiple times, the "Cypress" way of creating a "variable" is to chain a,
+**cy.contains("text"):** This way we can check if a certain text is shown in the scr een
+_
+**aliases**: If we would like to reuse a selector multiple times, the "Cypress" way of creating a "variable" is to chain a,
 for example, get, with a `.as()` function. like
 
 `cy.get('header button.side-menu').as('buttonSideMenu');`
@@ -37,23 +39,25 @@ Now we can select this element using that nickname, prefixed with @. Therefore, 
 `cy.get('@buttonSideMenu').click()`, we select that given element click.
 '
 _
-`cy.get('selector').type('value')`: This is the function we use in order to input something to any "typable" element or
+**`cy.get('selector').type('value**')`:** This is the function we use in order to input something to any "typable" element or
 that can receive a focus event from the keyboard.
 
 It is essentially used on input elements.
 _
-element.contains(tag, text): This is the way we usually use to target elements that can't be targeted by the "normal
+**element.contains(tag, text):** This is the way we usually use to target elements that can't be targeted by the "normal
 ways", like styling classes or classes with too much special characters.
 _
-cy.wait(duration): How much time we want to wait after an action was sent, like a click
+**cy.wait(duration):** How much time we want to wait after an action was sent, like a click
 _
-data.cy property: This property was set by the developer to easy and help the automation flow. These properties are common
+**data.cy property:** This property was set by the developer to easy and help the automation flow. These properties are common
 for cypress so it can use them inside the whole automation process. 
 _
-should('be.visible'): This was chained to the get, and said that the element selected SHOULD be visible.
+**should('be.visible'):** This was chained to the get, and said that the element selected SHOULD be visible.
 _
-.and("have.text", "Fernando Papito"): and is usually chained after the should function. It first saw that the element is
+**.and("have.text", "Fernando Papito"):** and is usually chained after the should function. It first saw that the element is
 visible, and then, check if the text of the element is the second parameter one.
+_
+**it("assertion").only(..., () => {...}):** This way we execute only that given assertion
 
 ## Configuration
 
