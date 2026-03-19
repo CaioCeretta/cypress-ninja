@@ -1,12 +1,7 @@
 describe("login", () => {
   it("should login successfully", () => {
-    cy.viewport(1920, 1080);
-    cy.visit("localhost:3000");
-
-    cy.get("#email").type("papito@webdojo.com");
-    cy.get("#password").type("katana123");
-
-    cy.contains("button", "Entrar").click();
+    cy.start();
+    cy.submitLoginForm("papito@webdojo.com", "katana123");
 
     cy.get('[data-cy="user-name"]')
       .should("be.visible")
@@ -21,25 +16,15 @@ describe("login", () => {
   });
 
   it("should not login with invalid password", () => {
-    cy.viewport(1920, 1080);
-    cy.visit("localhost:3000");
-
-    cy.get("#email").type("papito@webdojo.com");
-    cy.get("#password").type("katana321");
-
-    cy.contains("button", "Entrar").click();
+    cy.start();
+    cy.submitLoginForm("papito@webdojo.com", "katana321");
 
     cy.contains("Acesso negado! Tente novamente.").should("be.visible");
   });
 
   it("should not login with non-registered email", () => {
-    cy.viewport(1920, 1080);
-    cy.visit("localhost:3000");
-
-    cy.get("#email").type("papitoo@webdojo.com");
-    cy.get("#password").type("katana123");
-
-    cy.contains("button", "Entrar").click();
+    cy.start();
+    cy.submitLoginForm("papitoo@webdojo.com", "katana123");
 
     cy.contains("Acesso negado! Tente novamente.").should("be.visible");
   });
