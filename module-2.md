@@ -74,4 +74,3 @@ we can create a `Command` like we did on the login tests, where the arguments th
 we will have to pass are the name of the button (like formularios) and the title
 of the page (like "Consultoria")
 
-
