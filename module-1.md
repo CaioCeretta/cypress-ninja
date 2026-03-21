@@ -166,3 +166,35 @@ encapsulation, also visits a page and defines the viewport.
 
 Here, we have steps that do more than just that. So we can create a custom command, separate from the form submission one.
 
+## When to use .get and when to use .contains
+
+### get
+
+`get` fetches the pure CSS selector. It is the "on point" command. Use it every time we have the data-test-id, because
+it is unique and does not depend on what is written on the screen (perfect for multi-language)
+
+It is relatively faster than `contains` because the cypress engine fetches directly in the DOM attribute.
+
+### contains
+
+contains fetches the content of the text that the user sees. It is excellent to validate if the interface is communicating
+what it should.
+
+Example
+
+cy.contains("Fetch Client") or cy.get("button").contains("save")
+
+We use contains when we want to ensure a specific text appeared on the screen, or when we don't have access to place a
+test-id or to validate error messages like "incorrect password".should(be.visible)
+
+### Advanced tip
+
+Many times, combining both to ensure that we are interacting with the right element and it has the correct text 
+
+// Searches by the id (ensures that is the correct button) 
+// And verify if the text inside is the expected
+cy.get('[data-test-id="button-fetch-client"]')
+  .should('be.visible')
+  .and('contain', 'Search');
+
+  
