@@ -60,5 +60,34 @@ describe("Formulário de Consultoria", () => {
       .type("15981653557")
       .should("have.value", "(15) 98165-3557");
     // This way, we can verify if the mask is correct following the pattern expected by the developer
+
+    /* Select. We click on the element, that is an HTML, and the select options are shown. But we need to be careful, these
+  options we are seeing are HTML brought by the browser, and if that is not HTML, we cannot interact the click on the HTML.
+  */
+    // cy.get("#consultancyType").select("In Company");
+    /* 
+      What is shown on the browser when we click on a select. Is not an actual HTML. This is why we are using the function
+      select, since we are not clicking on the element, but selecting it.
+  
+      If we look into the running tests, we can see that cypress cannot click on a browser component, yet, in HTML pages
+      elements.
+
+     We are selecting by the option text, but we could also select by the option value, which is the value attribute of
+     the option element. For example:
+    */
+    // cy.get("#consultancyType").select("inCompany");
+
+    /* Now, let's imagine that the select does not have an identifier. We can use XPaths for these cases like:
+    `//label[text()="Tipo de Consultoria"]/..//select`. But again, cypress does not have native access to xpath. This is
+    just an example, we target the lable, go up an element, and find the select.
+     */
+
+    /* A real scenario where the select does not have a good selector is by doing: */
+    cy.contains("label", "Tipo de Consultoria")
+      .parent()
+      .find("select")
+      .select("Individual");
   });
+
+  
 });
