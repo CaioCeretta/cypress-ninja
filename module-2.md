@@ -28,7 +28,7 @@ And in this module we will look forward in understanding how to handle this data
 We will start by the consultancy form. To reach the consultancy form, we must first login, and click on the corresponding
 div to open that form. These are pre conditions for our test.
 
-First, use the commands we have create on the commands.js. The one to start and the other to fill.
+First, use the commands we have create on the commands.js. The one to start and the other to fill the login.
 
 After the login was made, we are going to click on the consultancy form block.
 
@@ -36,8 +36,8 @@ The shot mark, on the cypress ui, if we click on that div, it will show us a sel
 div, then the grid item, and so on. This is not a good practice when choosing our selector, because in case we add one
 or more items to that list, this can make that that selector is not selected anymore.
 
-What we can do in this cases is, to visit that page on the browser, inspect it, and notice that it this div is wrapped
-by a button. However, that button doesn't have an id, or classes that are not styling ones.
+What we can do in this case is, to inspect that form div on the browser, and notice that this div is wrapped by a button.
+Yet, that button doesn't have an id, or classes that are not styling ones.
 
 However, by expanding that button element, we can see that we have a child div, and this div has two other divs, one that
 groups the icon and the other one groups the title. These texts are oriented to the behavior of the webpage.
@@ -47,12 +47,12 @@ So in these cases where we don't have an id or a specific class, texts are the b
 
 `cy.contains('h4', 'Formulários')`
 
-And we can also target the parent of that component, by chaining the contains call with a parent() call, this is  will
-target the div that groups the title/description. And by chaining it more times we finally target the button that receives
-the click.
+And we can also target the parent of that component, by chaining the contains call with a parent() call, this will
+target the div that groups the title/description. And by chaining it more times we finally target the button that wraps
+that h4 and receives the click
 
 However, other than using these chained `parent()`s we can use the contains and target the button that has a children with
-the given text. So instead of h4, we target the button
+the given text. So instead of h4, we are able to target the button directly
 
 With XPATH, the same thing would be " //h4[text()="Formulários"]/../../..", where the /.. is the same as we have on the 
 terminal, where it moves up a folder, in this case, back to the parent.
