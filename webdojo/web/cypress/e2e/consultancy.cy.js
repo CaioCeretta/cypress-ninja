@@ -31,5 +31,34 @@ describe("Formulário de Consultoria", () => {
     */
 
     cy.goTo("Formulários", "Consultoria");
+
+    // cy.get("#name").type("Caio Ceretta");
+    // cy.get("#email").type("caioceretta@gmail.com");
+
+    /* These elements are simple to be targeted since they have unique ids, but nowadays, it's common for elements to not
+    have an id. However, inputs commonly have a placeholder, and they usually are unique. If we do not have any relevant
+    classes or ids, because many times the classes are uniquely dedicated to styling.
+
+    If by any chance, we don't have any of class with a "cool" name, like "txt-name", which is a name that is coherent to
+    the objective of that element, which we could use to target it. Placeholders end up being the best strategy.
+
+    To make use of placeholders, first we need to find the html tag, which is "input" and add something as
+
+    `cy.get('input[placeholder="Digite seu nome completo"]').type(
+      "Caio Ceretta",
+    );
+    `
+    */
+    cy.get('input[placeholder="Digite seu nome completo"]').type(
+      "Caio Ceretta",
+    );
+    cy.get('input[type="email"]').type("caioceretta@gmail.com");
+
+    /* In this case, the placeholder is like the input's real mask. However, to prevent that this input goes to production
+    with an incorrect mask, we can add a should assertion, like: */
+    cy.get('input[placeholder="(00) 00000-0000"]')
+      .type("15981653557")
+      .should("have.value", "(15) 98165-3557");
+    // This way, we can verify if the mask is correct following the pattern expected by the developer
   });
 });
