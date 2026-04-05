@@ -190,9 +190,9 @@ describe("Formulário de Consultoria", () => {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at nisi neque. Etiam mollis interdum aliquam.",
     );
 
-    /* Technologies input. The behavior of this text element is a bit different. We type the technology, press enter, and
-    it adds that value to a list. It is not the field that stores the data. It only receives the value and that values
-    are added to a tag element
+    /* Interacting with array of tags and simulatin a physical keyboard. The behavior of this text element is a bit different.
+    We type the technology, press enter, and it adds that value to a list. It is not the field that stores the data. It
+    only receives the value and that values are added to a tag element
     
     The way we can simulate the enter, which is a physical key of our keyboard is by adding a {type}
     */
@@ -226,5 +226,24 @@ describe("Formulário de Consultoria", () => {
         .contains("span", tech)
         .should("be.visible");
     });
+
+    /* Accept terms:
+
+    We have a div, that wraps a label, that wraps both an input and and a span that has a text and a link inside of it
+    with the use terms. However, just the use terms is the link to send to a different page.
+
+    In this selector, as we have already seen, "termos de uso" is a text that is inside an anchor inside a child element.
+    Then, when it finds that label. It finds the input the input checkbox inside that element and check it.
+    */
+    cy.contains("label", "termos de uso")
+      .find("input[type='checkbox']")
+      .check();
+
+    /* Submit form  */
+    cy.contains("button", "Enviar formulário").click();
+
+    cy.contains(
+      "Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.",
+    ).should("be.visible");
   });
 });
