@@ -182,5 +182,12 @@ describe("Formulário de Consultoria", () => {
     cy.get('input[type="file"]').selectFile("cypress/fixtures/document.pdf", {
       force: true,
     });
+
+    /* Textarea element */
+    cy.get(
+      "textarea[placeholder='Descreva mais detalhes sobre sua necessidade']",
+    ).type(
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at nisi neque. Etiam mollis interdum aliquam.",
+    );
   });
 });
