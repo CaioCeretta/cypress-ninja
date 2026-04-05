@@ -189,5 +189,42 @@ describe("Formulário de Consultoria", () => {
     ).type(
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at nisi neque. Etiam mollis interdum aliquam.",
     );
+
+    /* Technologies input. The behavior of this text element is a bit different. We type the technology, press enter, and
+    it adds that value to a list. It is not the field that stores the data. It only receives the value and that values
+    are added to a tag element
+    
+    The way we can simulate the enter, which is a physical key of our keyboard is by adding a {type}
+    */
+    cy.get('input[placeholder="Digite uma tecnologia e pressione Enter"]')
+      .type("Cypress")
+      .type("{enter}");
+
+    /* However, now we need to check if a span with the same inputted technology 
+    cy.contains("span", "Cypress").should("be.visible");
+
+    This is bad option, because we can have a span with the same text in another part of the page, and this would make
+    our test messy. Because it validates the first occurence of that text on the screen.
+    
+    A way we can use to determine this, is the following
+    
+    We know that we have a label with the text Tecnologias, and that label is a sibling to the span of the technology span
+    that showed up when we pressed enter. So we can go to the label, move up to the parent div, and directly target that
+    span, in a way that there won't be any ambiguity.
+    
+    And a way we can use to add several technologies like the way we made the checkboxes is:*/
+
+    const techs = ["Cypress", "Seleniun", "JavaScript", "React"];
+
+    techs.forEach((tech) => {
+      cy.get('input[placeholder="Digite uma tecnologia e pressione Enter"]')
+        .type(tech)
+        .type("{enter}");
+
+      cy.contains("label", "Tecnologias")
+        .parent()
+        .contains("span", tech)
+        .should("be.visible");
+    });
   });
 });
