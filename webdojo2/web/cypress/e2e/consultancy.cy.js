@@ -247,7 +247,7 @@ describe("Formulário de Consultoria", () => {
     ).should("be.visible");
   });
 
-  it.only("Deve verificar os campos obrigatórios", () => {
+  it("Deve verificar os campos obrigatórios", () => {
     cy.start();
     cy.submitLoginForm("papito@webdojo.com", "katana123");
 
@@ -262,12 +262,12 @@ describe("Formulário de Consultoria", () => {
     What will happen in this case is that the class may pass, because the element indeed has that class, but visually, it
     won't be as expected. This means that only verifying the class won't ensure that the color is correct, which will ask
     us to chain another and*/
-    cy.contains("p", "Digite nome e sobrenome")
+    cy.contains("p", "Campo obrigatório")
       .should("be.visible")
       .and("have.class", "text-red-400")
       .and("have.css", "color", "rgb(248, 113, 113)");
 
-    cy.contains("p", "Informe um email válido")
+    cy.contains("p", "Campo obrigatório")
       .should("be.visible")
       .and("have.class", "text-red-400")
       .and("have.css", "color", "rgb(248, 113, 113)");
