@@ -87,7 +87,100 @@ describe("Formulário de Consultoria", () => {
       .parent()
       .find("select")
       .select("Individual");
-  });
 
-  
+    /* Dealing with radio buttons. In radio buttons is very common to find the property name.
+    However, for radio buttons, in case we have two radio buttons for the same name, they will share the same name, but
+    with different values, and this will make this not be a good option to be used.
+
+    In these cases of a radio button where two radios share the same name. We should commonly retrieve the visual identification
+    by the text, move to the parent element, so we can reach the child component. Many times, the input is inside the label
+    that defines the description or title of the element.
+
+    XPath: //span[text()="Pessoa Física"]/../input
+
+    The way to do this without XPath is the following, where the label has both the radio input and the span with the text,
+    since the span is a child of the label, we can find the span with the text, move to the parent element, and find the input
+
+      cy.contains("span", "Pessoa Jurídica")
+      .parent()
+      .find('input[type="radio"]')
+      .click();
+
+    or, use the cypress resource, where we specify the type of the element, and the text that is inside it, and then we
+    can find the input inside it.
+    */
+
+    cy.contains("label", "Pessoa Física").find("input[type='radio']").check();
+
+    cy.contains("label", "Pessoa Jurídica")
+      .find("input")
+      .should("not.be.checked");
+
+    /* Let's now inspect the CPF field, that field is an input of type text, have an interesting id, which is document, but
+    let's imagine that this ID is not there.
+    
+    We have a placeholder, with a bunch of 0's in the mask of the CPF. 000.000.000-00. 
+
+    The .should(have.value) is a great way to check if the mask is correct, and if the value is being shown in the right
+    way.
+    cy.get('input[placeholder="000.000.000-00"]')
+      .type("36531226005")
+      .should("have.value", "365.312.260-05");
+
+    This works, however, the placeholder of that field is not good for automation, its a "weird" value to use as a target
+    for our automated tests
+    
+    According to the instructor, this is not a very intuitive nor clear way. Because it is not clear the kind of element
+    that we are targeting.
+
+    In this case, he prefers to use the label of the field, since it has the text "CPF"
+
+    This is a location strategy where: The label and the input share the same parent. We move to the parent and find the
+    input inside of it.
+  */
+
+    cy.contains("label", "CPF")
+      .parent()
+      .find('input[type="text"]')
+      .type("36531226005")
+      .should("have.value", "365.312.260-05");
+
+    /* Checkboxes. Constant creation and iteration for the checkboxes texts */
+
+    const discoveryChannels = [
+      "Instagram",
+      "LinkedIn",
+      "Udemy",
+      "YouTube",
+      "Indicação de Amigo",
+    ];
+
+    discoveryChannels.forEach((channel) => {
+      cy.contains("label", channel).find("input").check().should("be.checked");
+    });
+
+    /*  File input: 
+
+    We need to understand that in our case, the div where the text "Escolher arquivo" is on, it is not the actual input.
+    And since that input is very hard to style. Developers usually hide the input, and create a div that is going to be
+    the visual representation of the input, add the stylings to it, and hide the input
+    The context is like:
+    the label is the parent, and inside the label we have a div, with the text "Escolher arquivo", and we have the input
+    of type file, that is hidden, as this div sibling. 
+     
+    The way used to attach a file, is to grab it usually from the fixtures folder, that is located inside the cypress
+    folder.
+
+    However, since the input is hidden, we cannot interact with it, and should we actually interact with it?
+    But there is a reason for that element to be hidden, and the developer made sure that the user cannot interact with it.
+
+    So we should as a second parameter of the selectFile function, add force: true to force the interaction with the element
+    even if it is hidden
+
+    */
+
+    cy.get('input[type="file"]').selectFile("cypress/fixtures/document.pdf", {
+      force: true,
+    });
+  });
 });
