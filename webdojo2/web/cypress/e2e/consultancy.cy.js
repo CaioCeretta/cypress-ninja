@@ -1,5 +1,5 @@
 describe("Formulário de Consultoria", () => {
-  it("Deve solicitar consultoria individual", () => {
+  it.only("Deve solicitar consultoria individual", () => {
     cy.start();
     cy.submitLoginForm("papito@webdojo.com", "katana123");
 
@@ -62,8 +62,9 @@ describe("Formulário de Consultoria", () => {
     // This way, we can verify if the mask is correct following the pattern expected by the developer
 
     /* Select. We click on the element, that is an HTML, and the select options are shown. But we need to be careful, these
-  options we are seeing are HTML brought by the browser, and if that is not HTML, we cannot interact the click on the HTML.
-  */
+    options we are seeing are HTML brought by the browser, and if that is not HTML, we cannot interact the click on the HTML.
+    */
+
     // cy.get("#consultancyType").select("In Company");
     /* 
       What is shown on the browser when we click on a select. Is not an actual HTML. This is why we are using the function
@@ -242,9 +243,25 @@ describe("Formulário de Consultoria", () => {
     /* Submit form  */
     cy.contains("button", "Enviar formulário").click();
 
-    cy.contains(
-      "Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.",
-    ).should("be.visible");
+    // cy.contains(
+    //   "Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.",
+    // ).should("be.visible");
+
+    /* However, the full text most times isn't the best option. The window that shows up when we submit the form, is simply
+    a modal. A div with the class modal, and we can check if an element with that class is visible. And the content of the
+    modal is inside another div with the class of modal-content. Therefore, we can chain these calls, narrowing down so
+    we target the desired element.
+    
+    We can still use that sentence. But when we narrow the classes down, it reduces the chances of there being a duplicate.*/
+
+    cy.get(".modal")
+      .should("be.visible")
+      .find(".modal-content")
+      .should("be.visible")
+      .and(
+        "have.text",
+        "Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.",
+      );
   });
 
   it("Deve verificar os campos obrigatórios", () => {
