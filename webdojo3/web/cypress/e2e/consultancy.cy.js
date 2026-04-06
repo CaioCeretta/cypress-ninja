@@ -12,13 +12,13 @@ describe("Formulário de Consultoria", () => {
       .parent()
       .parent()
       .click();
-    
+
       However, this approach is not recommended, because there are easier ways to do the same thing, like targeting the
       button that has a children with the given text
     */
 
     /* This way, we simply use the tag of the parent element, because cypress also looks for the text in the children of
-    that element 
+    that element
     cy.contains("button", "Formulários").should("be.visible").click();
 
     // Checkpoint. If we found "Consultoria" it means we are in the right step
@@ -66,10 +66,10 @@ describe("Formulário de Consultoria", () => {
     */
 
     // cy.get("#consultancyType").select("In Company");
-    /* 
+    /*
       What is shown on the browser when we click on a select. Is not an actual HTML. This is why we are using the function
       select, since we are not clicking on the element, but selecting it.
-  
+
       If we look into the running tests, we can see that cypress cannot click on a browser component, yet, in HTML pages
       elements.
 
@@ -119,8 +119,8 @@ describe("Formulário de Consultoria", () => {
 
     /* Let's now inspect the CPF field, that field is an input of type text, have an interesting id, which is document, but
     let's imagine that this ID is not there.
-    
-    We have a placeholder, with a bunch of 0's in the mask of the CPF. 000.000.000-00. 
+
+    We have a placeholder, with a bunch of 0's in the mask of the CPF. 000.000.000-00.
 
     The .should(have.value) is a great way to check if the mask is correct, and if the value is being shown in the right
     way.
@@ -130,7 +130,7 @@ describe("Formulário de Consultoria", () => {
 
     This works, however, the placeholder of that field is not good for automation, its a "weird" value to use as a target
     for our automated tests
-    
+
     According to the instructor, this is not a very intuitive nor clear way. Because it is not clear the kind of element
     that we are targeting.
 
@@ -160,15 +160,15 @@ describe("Formulário de Consultoria", () => {
       cy.contains("label", channel).find("input").check().should("be.checked");
     });
 
-    /*  File input: 
+    /*  File input:
 
     We need to understand that in our case, the div where the text "Escolher arquivo" is on, it is not the actual input.
     And since that input is very hard to style. Developers usually hide the input, and create a div that is going to be
     the visual representation of the input, add the stylings to it, and hide the input
     The context is like:
     the label is the parent, and inside the label we have a div, with the text "Escolher arquivo", and we have the input
-    of type file, that is hidden, as this div sibling. 
-     
+    of type file, that is hidden, as this div sibling.
+
     The way used to attach a file, is to grab it usually from the fixtures folder, that is located inside the cypress
     folder.
 
@@ -194,25 +194,25 @@ describe("Formulário de Consultoria", () => {
     /* Interacting with array of tags and simulatin a physical keyboard. The behavior of this text element is a bit different.
     We type the technology, press enter, and it adds that value to a list. It is not the field that stores the data. It
     only receives the value and that values are added to a tag element
-    
+
     The way we can simulate the enter, which is a physical key of our keyboard is by adding a {type}
     */
     cy.get('input[placeholder="Digite uma tecnologia e pressione Enter"]')
       .type("Cypress")
       .type("{enter}");
 
-    /* However, now we need to check if a span with the same inputted technology 
+    /* However, now we need to check if a span with the same inputted technology
     cy.contains("span", "Cypress").should("be.visible");
 
     This is bad option, because we can have a span with the same text in another part of the page, and this would make
     our test messy. Because it validates the first occurence of that text on the screen.
-    
+
     A way we can use to determine this, is the following
-    
+
     We know that we have a label with the text Tecnologias, and that label is a sibling to the span of the technology span
     that showed up when we pressed enter. So we can go to the label, move up to the parent div, and directly target that
     span, in a way that there won't be any ambiguity.
-    
+
     And a way we can use to add several technologies like the way we made the checkboxes is:*/
 
     const techs = ["Cypress", "Seleniun", "JavaScript", "React"];
@@ -251,10 +251,28 @@ describe("Formulário de Consultoria", () => {
     a modal. A div with the class modal, and we can check if an element with that class is visible. And the content of the
     modal is inside another div with the class of modal-content. Therefore, we can chain these calls, narrowing down so
     we target the desired element.
-    
+
     We can still use that sentence. But when we narrow the classes down, it reduces the chances of there being a duplicate.*/
 
-    cy.get(".modal")
+    /* At the third version, even though we have element defined with the class modal, it is taking more than 4 seconds to
+  load, which will cause the test to fail in 4000ms.
+
+    What if we configure an execution retry in case the test fails because of a performance problem? This is not a good
+    option, the idea of retries is not very optimal, we can solve this by opening the project, going to the cypress.config.js
+    file, and on the e2e object add a new property to it of defaultCommandTimeout. And in this new property, set the timeout
+    to 10000ms
+
+    But this caused the other parts of the application to take 10s to report errors, that shouldn't take so long. So we
+    will revert that config.
+
+    Which makes more sense to work with explicit timeouts. We simply add a comma to the get function, and add add that
+    timeout
+
+    Even though cypress isn't used to test the performance, when we have to add a timeout. It is a big indicative that
+    something is incorrect.
+  */
+
+    cy.get(".modal", { timeout: 7000 })
       .should("be.visible")
       .find(".modal-content")
       .should("be.visible")
@@ -275,7 +293,7 @@ describe("Formulário de Consultoria", () => {
     /* Testing the styling: We can chain an and function, where we assert that we expect that element to have a specific
     class. However, the element might no be in that expected color. Assume that the developer made something like adding
     a class text-red-400, but within that class, say that it will have the color green.
-    
+
     What will happen in this case is that the class may pass, because the element indeed has that class, but visually, it
     won't be as expected. This means that only verifying the class won't ensure that the color is correct, which will ask
     us to chain another and*/
